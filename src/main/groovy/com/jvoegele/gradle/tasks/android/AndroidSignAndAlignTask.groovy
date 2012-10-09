@@ -42,9 +42,10 @@ class AndroidSignAndAlignTask extends DefaultTask {
       throw new GradleException("Keystore file ${keystore} not found")
 
     def args = [JavaEnvUtils.getJdkExecutable('jarsigner'),
-                verbose?'-verbose':'',
-                '-sigalg', 'MD5withRSA',
-                '-digestalg', 'SHA1',
+    //          verbose?'-verbose':'',
+                '-verbose',
+    //            '-sigalg', 'MD5withRSA',
+    //            '-digestalg', 'SHA1',
                 '-keystore', keystore,
                 '-keypass', keypass,
                 '-storepass', storepass,
