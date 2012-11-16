@@ -28,6 +28,9 @@ class AndroidSignAndAlignTask extends DefaultTask {
   @Optional @Input String keyAlias
   @Optional @Input String keyStorePassword
   @Optional @Input String keyAliasPassword
+  @Optional @Input String sigalg
+  @Optional @Input String digestalg
+  @Optional @Input String keyalg
   boolean verbose
 
   private File customUnsingedArchivePath
@@ -42,10 +45,9 @@ class AndroidSignAndAlignTask extends DefaultTask {
       throw new GradleException("Keystore file ${keystore} not found")
 
     def args = [JavaEnvUtils.getJdkExecutable('jarsigner'),
-    //          verbose?'-verbose':'',
                 '-verbose',
-    //            '-sigalg', 'MD5withRSA',
-    //            '-digestalg', 'SHA1',
+                '-sigalg', sigalg != null ? sigalg : 'MD5withRSA',
+                '-digestalg', digestalg != null ? digestalg : 'SHA1',
                 '-keystore', keystore,
                 '-keypass', keypass,
                 '-storepass', storepass,
@@ -138,7 +140,9 @@ class AndroidSignAndAlignTask extends DefaultTask {
             keypass: 'android',
             validity: 10 * 365,
             storetype: 'JKS',
-            dname: 'CN=Android Debug,O=Android,C=US')
+            dname: 'CN=Android Debug,O=Android,C=US',
+            sigalg: sigalg != null ? sigalg : 'MD5withRSA',
+            keyalg: keyalg != null ? keyalg : 'RSA')
       }
 
       return debugKeystore.absolutePath
